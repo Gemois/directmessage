@@ -50,10 +50,18 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
+        return buildToken(userDetails, jwtProperties.getJwtExpiration());
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return buildToken(userDetails, jwtProperties.getJwtRefreshExpiration());
+    }
+
+    public String buildToken(UserDetails userDetails, long expiration) {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + jwtProperties.getJwtExpiration()))
+                .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey())
                 .compact();
     }
