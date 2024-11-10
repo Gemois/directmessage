@@ -25,9 +25,16 @@ public class User implements UserDetails {
     private Long id;
     private String firstName;
     private String lastName;
+    private String displayName;
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] photo;
+
     private String email;
     private String password;
     private String phone;
+    private Status status;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
