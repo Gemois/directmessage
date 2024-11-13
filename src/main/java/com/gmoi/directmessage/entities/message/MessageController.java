@@ -1,4 +1,4 @@
-package com.gmoi.directmessage.message;
+package com.gmoi.directmessage.entities.message;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

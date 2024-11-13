@@ -1,4 +1,4 @@
-package com.gmoi.directmessage.user;
+package com.gmoi.directmessage.entities.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -24,13 +24,19 @@ public class UserController {
     }
 
     @GetMapping("/connected")
-    public ResponseEntity<List<User>> findConnectedUsers() {
+    public ResponseEntity<List<UserDto>> findConnectedUsers() {
         return ResponseEntity.ok(userService.findConnectedUsers());
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDto> getCurrentUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt) {
-        return ResponseEntity.ok(userService.getCurrentUser(jwt));
+    public ResponseEntity<UserDto> getCurrentUser() {
+        return ResponseEntity.ok(userService.getCurrentUser());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDto>> searchUsers(@RequestParam() String query) {
+        List<UserDto> result = userService.searchUsers(query);
+        return ResponseEntity.ok(result);
     }
 
     @MessageMapping("user/connect")

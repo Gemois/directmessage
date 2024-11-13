@@ -1,8 +1,8 @@
 package com.gmoi.directmessage.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gmoi.directmessage.user.User;
-import com.gmoi.directmessage.user.UserRepository;
+import com.gmoi.directmessage.entities.user.User;
+import com.gmoi.directmessage.entities.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
