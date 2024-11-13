@@ -1,4 +1,4 @@
-package com.gmoi.directmessage.user;
+package com.gmoi.directmessage.entities.user;
 
 
 import lombok.Builder;

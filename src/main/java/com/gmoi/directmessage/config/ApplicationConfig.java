@@ -1,6 +1,6 @@
 package com.gmoi.directmessage.config;
 
-import com.gmoi.directmessage.user.UserRepository;
+import com.gmoi.directmessage.entities.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

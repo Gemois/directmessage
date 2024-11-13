@@ -1,4 +1,4 @@
-package com.gmoi.directmessage.messageroom;
+package com.gmoi.directmessage.entities.messageroom;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

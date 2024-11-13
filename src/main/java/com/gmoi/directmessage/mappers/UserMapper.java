@@ -1,7 +1,7 @@
 package com.gmoi.directmessage.mappers;
 
-import com.gmoi.directmessage.user.User;
-import com.gmoi.directmessage.user.UserDto;
+import com.gmoi.directmessage.entities.user.User;
+import com.gmoi.directmessage.entities.user.UserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

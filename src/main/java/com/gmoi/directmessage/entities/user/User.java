@@ -1,4 +1,4 @@
-package com.gmoi.directmessage.user;
+package com.gmoi.directmessage.entities.user;
 
 
 import jakarta.persistence.*;
@@ -26,15 +26,15 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
     private String displayName;
-
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    private byte[] photo;
-
     private String email;
     private String password;
     private String phone;
-    private Status status;
+
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] photo;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
