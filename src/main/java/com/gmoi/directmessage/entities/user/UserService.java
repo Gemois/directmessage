@@ -1,15 +1,12 @@
 package com.gmoi.directmessage.entities.user;
 
-import com.gmoi.directmessage.auth.JwtService;
 import com.gmoi.directmessage.entities.friendship.FriendshipService;
 import com.gmoi.directmessage.mappers.UserMapper;
 import com.gmoi.directmessage.utils.RequestUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,53 +15,71 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final FriendshipService friendshipService;
-    private final JwtService jwtService;
 
-    public UserDto getCurrentUser() {
-        return UserMapper.INSTANCE.userToUserDto(RequestUtil.getCurrentUser());
+    public UserDTO getUser() {
+        return UserMapper.INSTANCE.toDto(RequestUtil.getCurrentUser());
     }
 
-    public List<UserDto> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return UserMapper.INSTANCE.usersToUserDtos(users);
+        return UserMapper.INSTANCE.toDto(users);
     }
 
-    public List<UserDto> findConnectedUsers() {
-        List<User> onlineFriends = friendshipService.getFriends(RequestUtil.getCurrentUser())
+    public List<UserDTO> findConnectedUsers() {
+        return friendshipService.getFriends(RequestUtil.getCurrentUser())
                 .stream()
                 .filter(user -> user.getStatus().equals(UserStatus.ONLINE))
                 .collect(Collectors.toList());
-
-        return UserMapper.INSTANCE.usersToUserDtos(onlineFriends);
     }
 
-    public User connect(String jwt) {
-        User user = findUser(jwt);
-        user.setStatus(UserStatus.ONLINE);
-        userRepository.save(user);
-        return user;
+    public List<UserDTO> searchUsers(String query) {
+        List<User> users = userRepository.searchUsers(query);
+        return UserMapper.INSTANCE.toDto(users);
     }
 
-    public User disconnect(String jwt) {
-        User user = findUser(jwt);
-        user.setStatus(UserStatus.OFFLINE);
-        userRepository.save(user);
-        return user;
-    }
+    public UserDTO updateUserDetails(UserDTO updatedUser) {
+        User existingUser = RequestUtil.getCurrentUser();
 
-    public List<UserDto> searchUsers(String searchTerm) {
-        List<User> users = userRepository.searchUsers(searchTerm);
-        return UserMapper.INSTANCE.usersToUserDtos(users);
-    }
-
-    private User findUser(String jwt) {
-        String email = jwtService.extractUsername(jwt.substring(7));
-        Optional<User> user = userRepository.findByEmail(email);
-
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
+        if (updatedUser.getFirstName() != null) {
+            existingUser.setFirstName(updatedUser.getFirstName());
+        }
+        if (updatedUser.getLastName() != null) {
+            existingUser.setLastName(updatedUser.getLastName());
+        }
+        if (updatedUser.getDisplayName() != null) {
+            existingUser.setDisplayName(updatedUser.getDisplayName());
+        }
+        if (updatedUser.getEmail() != null) {
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getPhone() != null) {
+            existingUser.setPhone(updatedUser.getPhone());
+        }
+        if (updatedUser.getStatus() != null) {
+            existingUser.setStatus(updatedUser.getStatus());
+        }
+        if (updatedUser.getPhoto() != null) {
+            existingUser.setPhoto(updatedUser.getPhoto());
         }
 
-        return user.get();
+        userRepository.save(existingUser);
+        return UserMapper.INSTANCE.toDto(existingUser);
+    }
+
+    public Void deleteUser() {
+        User user = RequestUtil.getCurrentUser();
+        userRepository.delete(user);
+        return null;
+    }
+
+    public User updateUserStatus(User user, UserStatus status) {
+
+        if (status == UserStatus.ONLINE) {
+           user.setStatus(UserStatus.ONLINE);
+        } else if (status == UserStatus.OFFLINE) {
+            user.setStatus(UserStatus.OFFLINE);
+        }
+
+        return userRepository.save(user);
     }
 }

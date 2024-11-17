@@ -19,9 +19,14 @@ public class MessageController {
     private final MessageService chatMessageService;
 
     @MessageMapping("/send-message")
-    public void processMessage(@Payload Message message) {
+    public void sendMessage(@Payload Message message) {
         Message savedMsg = chatMessageService.save(message);
         messagingTemplate.convertAndSendToUser(message.getRecipientId(), "/queue/messages", savedMsg);
+    }
+
+    @MessageMapping("/typing")
+    public void sendTypingIndicator(@Payload TypingIndicator typingIndicator) {
+        messagingTemplate.convertAndSendToUser(typingIndicator.getRecipient(), "/queue/typing", typingIndicator);
     }
 
     @GetMapping("/messages/{senderId}/{recipientId}")

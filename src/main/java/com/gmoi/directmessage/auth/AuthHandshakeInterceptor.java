@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,7 @@ public class AuthHandshakeInterceptor implements HandshakeInterceptor {
                 String userEmail = jwtService.extractUsername(jwtToken);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
                 if (userEmail != null && jwtService.isTokenValid(jwtToken, userDetails)) {
+                    attributes.put("simpUser", new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
                     return true;
                 }
             }

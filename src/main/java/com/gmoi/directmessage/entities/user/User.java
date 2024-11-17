@@ -6,10 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,6 +39,12 @@ public class User implements UserDetails {
     @Basic(fetch = FetchType.LAZY)
     private byte[] photo;
 
+    private LocalDateTime lastActivityDate;
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;
+    @CreatedDate
+    private LocalDateTime createdDate;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("USER"));
@@ -49,5 +58,9 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public void updateLastActivity() {
+        setLastActivityDate(LocalDateTime.now());
     }
 }

@@ -4,6 +4,7 @@ import com.gmoi.directmessage.entities.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +27,8 @@ public class Friendship {
     @Enumerated(EnumType.STRING)
     private FriendshipStatus status;
 
+    @LastModifiedDate
+    private LocalDateTime modifiedAt;
     @CreatedDate
     private LocalDateTime createdAt;
 

@@ -1,7 +1,7 @@
 package com.gmoi.directmessage.mappers;
 
 import com.gmoi.directmessage.entities.user.User;
-import com.gmoi.directmessage.entities.user.UserDto;
+import com.gmoi.directmessage.entities.user.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    UserDto userToUserDto(User user);
+    UserDTO toDto(User user);
 
-    List<UserDto> usersToUserDtos(List<User> users);
+    List<UserDTO> toDto(List<User> users);
 }
