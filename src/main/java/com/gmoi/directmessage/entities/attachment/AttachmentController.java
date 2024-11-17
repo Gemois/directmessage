@@ -13,7 +13,7 @@ public class AttachmentController {
     private final AttachmentService attachmentService;
 
     @PostMapping()
-    public ResponseEntity<Attachment> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<AttachmentDTO> uploadFile(@RequestParam("file") MultipartFile file) {
         return ResponseEntity.ok(attachmentService.uploadFile(file));
     }
 

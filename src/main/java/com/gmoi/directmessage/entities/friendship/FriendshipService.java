@@ -1,10 +1,14 @@
 package com.gmoi.directmessage.entities.friendship;
 
 import com.gmoi.directmessage.entities.friendrequest.FriendRequest;
+import com.gmoi.directmessage.entities.friendrequest.FriendRequestDTO;
 import com.gmoi.directmessage.entities.friendrequest.FriendRequestRepository;
 import com.gmoi.directmessage.entities.friendrequest.FriendRequestStatus;
 import com.gmoi.directmessage.entities.user.User;
+import com.gmoi.directmessage.entities.user.UserDTO;
 import com.gmoi.directmessage.entities.user.UserRepository;
+import com.gmoi.directmessage.mappers.FriendRequestMapper;
+import com.gmoi.directmessage.mappers.UserMapper;
 import com.gmoi.directmessage.utils.RequestUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -78,20 +82,15 @@ public class FriendshipService {
         friendRequestRepository.save(request);
     }
 
-
-    public List<User> getFriends(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        return getFriends(user);
-    }
-
-    public List<User> getFriends(User user) {
+    public List<UserDTO> getFriends(User user) {
         List<Friendship> friendships = friendshipRepository.findByUser1OrUser2(user, user);
-        return friendships.stream().map(friendship -> friendship.getUser1().equals(user) ? friendship.getUser2() : friendship.getUser1()).toList();
+        List<User> friends = friendships.stream().map(friendship -> friendship.getUser1().equals(user) ? friendship.getUser2() : friendship.getUser1()).toList();
+        return UserMapper.INSTANCE.toDto(friends);
     }
 
-    public List<FriendRequest> getPendingFriendRequests(Long userId) {
-        User recipient = userRepository.findById(userId).orElseThrow();
-        return friendRequestRepository.findByRecipientAndStatus(recipient, FriendRequestStatus.PENDING);
+    public List<FriendRequestDTO> getPendingFriendRequests(User user) {
+        List<FriendRequest> friendRequests = friendRequestRepository.findByRecipientAndStatus(user, FriendRequestStatus.PENDING);
+        return FriendRequestMapper.INSTANCE.toDto(friendRequests);
     }
 
 }

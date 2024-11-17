@@ -36,8 +36,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOrigins("*")
                 .addInterceptors(authHandshakeInterceptor)
                 .withSockJS();
-
-
     }
 
     @Override

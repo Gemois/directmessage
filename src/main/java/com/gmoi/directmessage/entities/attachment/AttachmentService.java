@@ -1,6 +1,7 @@
 package com.gmoi.directmessage.entities.attachment;
 
 import com.gmoi.directmessage.aws.S3Service;
+import com.gmoi.directmessage.mappers.AttachmentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class AttachmentService {
     private final S3Service s3Service;
     private final AttachmentRepository attachmentRepository;
 
-    public Attachment uploadFile(MultipartFile file) {
+    public AttachmentDTO uploadFile(MultipartFile file) {
 
         Attachment attachment = Attachment.builder()
                 .fileName(file.getOriginalFilename())
@@ -26,7 +27,7 @@ public class AttachmentService {
         Attachment savedAttachment = attachmentRepository.save(attachment);
         s3Service.uploadFile(savedAttachment.getId().toString(), file);
 
-        return savedAttachment;
+        return AttachmentMapper.INSTANCE.toDto(savedAttachment);
     }
 
     public ResponseEntity<byte[]> downloadFile(Long id) {

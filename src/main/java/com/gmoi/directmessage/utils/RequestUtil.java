@@ -1,6 +1,7 @@
 package com.gmoi.directmessage.utils;
 
 import com.gmoi.directmessage.entities.user.User;
+import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

@@ -1,8 +1,8 @@
 package com.gmoi.directmessage.entities.friendship;
 
-
-import com.gmoi.directmessage.entities.friendrequest.FriendRequest;
-import com.gmoi.directmessage.entities.user.User;
+import com.gmoi.directmessage.entities.friendrequest.FriendRequestDTO;
+import com.gmoi.directmessage.entities.user.UserDTO;
+import com.gmoi.directmessage.utils.RequestUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +14,11 @@ import java.util.List;
 public class FriendshipController {
 
     private final FriendshipService friendshipService;
+
+    @GetMapping()
+    public List<UserDTO> getFriends() {
+        return friendshipService.getFriends(RequestUtil.getCurrentUser());
+    }
 
     @PostMapping("/friend-request/{recipientId}")
     public void sendFriendRequest(@PathVariable Long recipientId) {
@@ -30,14 +35,9 @@ public class FriendshipController {
         friendshipService.rejectFriendRequest(requestId);
     }
 
-    @GetMapping("/{userId}")
-    public List<User> getFriends(@PathVariable Long userId) {
-        return friendshipService.getFriends(userId);
-    }
-
-    @GetMapping("/{userId}/pending-requests")
-    public List<FriendRequest> getPendingRequests(@PathVariable Long userId) {
-        return friendshipService.getPendingFriendRequests(userId);
+    @GetMapping("/pending-requests")
+    public List<FriendRequestDTO> getPendingRequests() {
+        return friendshipService.getPendingFriendRequests(RequestUtil.getCurrentUser());
     }
 
 }
