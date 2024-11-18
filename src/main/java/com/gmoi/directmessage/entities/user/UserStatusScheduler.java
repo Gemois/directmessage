@@ -1,6 +1,7 @@
 package com.gmoi.directmessage.entities.user;
 
 import com.gmoi.directmessage.entities.friendship.FriendshipService;
+import com.gmoi.directmessage.entities.message.MessageDestination;
 import com.gmoi.directmessage.properties.UserProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -35,7 +36,7 @@ public class UserStatusScheduler {
 
     private void notifyStatusChange(User user) {
         for (UserDTO friend : friendshipService.getFriends(user)) {
-            messagingTemplate.convertAndSendToUser(friend.getId().toString(), "/user/status/", user);
+            messagingTemplate.convertAndSendToUser(friend.getId().toString(), MessageDestination.STATUS.getDestination(), user);
         }
     }
 }

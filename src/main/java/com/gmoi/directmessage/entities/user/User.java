@@ -43,7 +43,7 @@ public class User implements UserDetails {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
