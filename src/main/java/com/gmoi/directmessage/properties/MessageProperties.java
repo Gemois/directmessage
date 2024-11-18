@@ -6,13 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Data
-@ConfigurationProperties(prefix = "user")
-public class UserProperties {
-
-    private Status status = new Status();
-
-    @Data
-    public static class Status {
-        private long inactiveThresholdMinutes;
-    }
+@ConfigurationProperties(prefix = "message")
+public class MessageProperties {
+    private long editMinutes;
+    private long deleteMinutes;
 }

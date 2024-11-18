@@ -29,3 +29,7 @@ aws:
 user:
   status:
     inactive-threshold-minutes: 30
+
+message:
+  edit-minutes: 5
+  delete-minutes: 5

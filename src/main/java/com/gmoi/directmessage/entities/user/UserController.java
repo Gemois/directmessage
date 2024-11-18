@@ -1,6 +1,7 @@
 package com.gmoi.directmessage.entities.user;
 
 import com.gmoi.directmessage.entities.friendship.FriendshipService;
+import com.gmoi.directmessage.entities.message.MessageDestination;
 import com.gmoi.directmessage.utils.WebSocketUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class UserController {
         User updatedUser = userService.updateUserStatus(WebSocketUtil.getCurrentUser(principal), status);
 
         for (UserDTO friend : friendshipService.getFriends(updatedUser)) {
-            messagingTemplate.convertAndSendToUser(friend.getId().toString(), "/queue/status", updatedUser);
+            messagingTemplate.convertAndSendToUser(friend.getId().toString(), MessageDestination.STATUS.getDestination(), updatedUser);
         }
     }
 

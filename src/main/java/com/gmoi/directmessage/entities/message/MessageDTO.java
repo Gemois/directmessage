@@ -5,6 +5,7 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -16,5 +17,12 @@ public class MessageDTO {
     private String recipientId;
     private String content;
     private String attachment;
-    private Date timestamp;
+    private LocalDateTime createdAt;
+    private boolean read;
+    private LocalDateTime readAt;
+    private boolean isEdited;
+    private LocalDateTime editedAt;
+    private boolean isDeleted;
+    private LocalDateTime deletedAt;
+    private boolean isPinned;
 }

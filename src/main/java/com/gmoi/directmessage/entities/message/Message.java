@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -23,6 +23,15 @@ public class Message {
     private String senderId;
     private String recipientId;
     private String content;
+    private boolean isAttachmentMsg;
     private String attachment;
-    private Date timestamp;
+    private LocalDateTime createdAt;
+    private boolean read;
+    private LocalDateTime readAt;
+    private boolean isEdited;
+    private LocalDateTime editedAt;
+    private boolean isDeleted;
+    private LocalDateTime deletedAt;
+    private boolean isPinned = false;
+
 }
