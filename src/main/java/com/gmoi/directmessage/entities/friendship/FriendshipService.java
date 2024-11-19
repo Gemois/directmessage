@@ -7,6 +7,7 @@ import com.gmoi.directmessage.entities.friendrequest.FriendRequestStatus;
 import com.gmoi.directmessage.entities.user.User;
 import com.gmoi.directmessage.entities.user.UserDTO;
 import com.gmoi.directmessage.entities.user.UserRepository;
+import com.gmoi.directmessage.mail.MailService;
 import com.gmoi.directmessage.mappers.FriendRequestMapper;
 import com.gmoi.directmessage.mappers.UserMapper;
 import com.gmoi.directmessage.utils.RequestUtil;
@@ -24,6 +25,7 @@ public class FriendshipService {
     private final UserRepository userRepository;
     private final FriendRequestRepository friendRequestRepository;
     private final FriendshipRepository friendshipRepository;
+    private final MailService mailService;
 
     @Transactional
     public void sendFriendRequest(Long recipientId) {
@@ -46,6 +48,7 @@ public class FriendshipService {
         friendRequest.setStatus(FriendRequestStatus.PENDING);
 
         friendRequestRepository.save(friendRequest);
+        mailService.sendFriendRequestEmail(friendRequest);
     }
 
     @Transactional
@@ -69,6 +72,7 @@ public class FriendshipService {
 
         request.setStatus(FriendRequestStatus.ACCEPTED);
         friendRequestRepository.save(request);
+        mailService.sendFriendRequestAcceptedEmail(request);
     }
 
     @Transactional

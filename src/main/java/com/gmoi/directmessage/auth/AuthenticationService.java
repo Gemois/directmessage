@@ -3,6 +3,7 @@ package com.gmoi.directmessage.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmoi.directmessage.entities.user.User;
 import com.gmoi.directmessage.entities.user.UserRepository;
+import com.gmoi.directmessage.mail.MailService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final MailService mailService;
 
     public AuthenticationResponse register(RegisterRequest request) {
 
@@ -41,6 +43,8 @@ public class AuthenticationService {
         var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(savedUser);
         var refreshToken = jwtService.generateRefreshToken(user);
+
+        mailService.sendRegistrationSuccessEmail(savedUser);
 
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
