@@ -57,4 +57,11 @@ public class AttachmentService {
             throw new RuntimeException("Failed to download file", e);
         }
     }
+
+    public void deleteFile(Long id) {
+        Attachment attachment = attachmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Attachment not found"));
+        s3Service.deleteFile(attachment.getId().toString());
+        attachmentRepository.delete(attachment);
+    }
 }

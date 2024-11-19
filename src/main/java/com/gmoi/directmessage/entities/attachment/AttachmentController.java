@@ -21,4 +21,9 @@ public class AttachmentController {
     public ResponseEntity<byte[]> downloadFile(@PathVariable Long id) {
         return attachmentService.downloadFile(id);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteFile(@PathVariable Long id) {
+        attachmentService.deleteFile(id);
+    }
 }
