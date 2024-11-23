@@ -31,6 +31,25 @@ spring:
           write-timeout: 5000
     protocol: smtp
     default-encoding: UTF-8
+  banner:
+    location: classpath:banner.txt
+
+logging:
+  level:
+    root: INFO
+    com.gmoi.directmessage: DEBUG
+  file:
+    name: logs/chatapp.log
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+  logback:
+    rollingpolicy:
+      fileNamePattern: "logs/chatapp-%d{yyyy-MM-dd}.%i.log"
+      max-history: 30
+      total-size-cap: 10MB
 
 jwt:
   secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
