@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/emojis")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/emojis")
 public class EmojiController {
 
     private final EmojiService emojiService;

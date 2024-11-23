@@ -3,6 +3,7 @@ package com.gmoi.directmessage.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmoi.directmessage.entities.user.User;
 import com.gmoi.directmessage.entities.user.UserRepository;
+import com.gmoi.directmessage.entities.user.UserRole;
 import com.gmoi.directmessage.mail.MailService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,6 +44,7 @@ public class AuthenticationService {
                 .lastName(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .role(UserRole.USER)
                 .build();
 
         var savedUser = userRepository.save(user);

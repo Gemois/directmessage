@@ -1,5 +1,6 @@
 package com.gmoi.directmessage.entities.reaction.emoji;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -41,7 +42,7 @@ public class EmojiService {
                 throw new FileNotFoundException("Emoji image not found or unreadable: " + emojiName);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error retrieving the emoji image", e);
+            throw new EntityNotFoundException("Error retrieving the emoji image", e);
         }
     }
 }

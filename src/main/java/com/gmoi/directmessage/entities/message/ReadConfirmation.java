@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class ReadConfirmation {
     private String chatId;
     private String recipientId;

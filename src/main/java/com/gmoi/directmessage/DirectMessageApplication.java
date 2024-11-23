@@ -5,12 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication
 @EnableScheduling
+@SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
-public class DirectmessageApplication {
+public class DirectMessageApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DirectmessageApplication.class, args);
+        SpringApplication.run(DirectMessageApplication.class, args);
     }
 }
