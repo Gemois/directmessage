@@ -1,19 +1,18 @@
 package com.gmoi.directmessage.entities.friendship;
 
+import com.gmoi.directmessage.entities.Auditable;
 import com.gmoi.directmessage.entities.user.User;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.Data;
-import org.springframework.data.annotation.*;
-import org.springframework.data.annotation.Version;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
-
-@Entity
 @Data
+@Entity
+@EqualsAndHashCode(callSuper = false)
 @EntityListeners(AuditingEntityListener.class)
-public class Friendship {
+public class Friendship extends Auditable {
 
     @Id
     @GeneratedValue()
@@ -29,24 +28,5 @@ public class Friendship {
 
     @Enumerated(EnumType.STRING)
     private FriendshipStatus status;
-
-    @CreatedBy
-    @Column(updatable = false)
-    private Long createdBy;
-
-    @LastModifiedBy
-    @Column(insertable = false)
-    private Long lastModifiedBy;
-
-    @Version
-    private long version;
-
-    @LastModifiedDate
-    @Column(insertable = false)
-    private LocalDateTime modifiedDate;
-
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
 
 }

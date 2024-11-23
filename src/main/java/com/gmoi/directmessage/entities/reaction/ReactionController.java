@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/reactions")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/reactions")
 public class ReactionController {
 
     private final ReactionService reactionService;

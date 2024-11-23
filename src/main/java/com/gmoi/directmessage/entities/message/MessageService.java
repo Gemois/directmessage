@@ -4,6 +4,7 @@ import com.gmoi.directmessage.entities.messageroom.MessageRoomService;
 import com.gmoi.directmessage.entities.user.User;
 import com.gmoi.directmessage.mappers.MessageMapper;
 import com.gmoi.directmessage.properties.MessageProperties;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,10 +31,9 @@ public class MessageService {
                 .getMessageRoomId(message.getSenderId(), message.getRecipientId(), true)
                 .orElseThrow(() -> {
                     log.warn("Chat room not found for senderId: {} and recipientId: {}", message.getSenderId(), message.getRecipientId());
-                    return new RuntimeException("Chat room not found");
+                    return new EntityNotFoundException("Chat room not found");
                 });
         message.setChatId(chatId);
-        message.setCreatedAt(LocalDateTime.now());
         repository.save(message);
 
         log.info("Message saved successfully with ID: {}", message.getId());
@@ -60,14 +60,14 @@ public class MessageService {
 
                 return MessageMapper.INSTANCE.toDto(editedMsg);
             } else {
-                throw new RuntimeException("User cannot edit this message.");
+                throw new IllegalStateException("User cannot edit this message.");
             }
         } else {
-                throw new RuntimeException("User cannot edit this message.");
+                throw new IllegalStateException("User cannot edit this message.");
             }
         }
         log.warn("Message with ID: {} not found for editing", editedMessage.getId());
-        throw new RuntimeException("Message not found");
+        throw new EntityNotFoundException("Message not found");
     }
 
     public MessageDTO deleteMessage(Long messageId, User user) {
@@ -89,15 +89,15 @@ public class MessageService {
                     return MessageMapper.INSTANCE.toDto(deletedMsg);
                 } else {
                     log.warn("Delete window expired for message ID: {}", messageId);
-                    throw new RuntimeException("User cannot delete this message.");
+                    throw new IllegalStateException("User cannot delete this message.");
                 }
             } else {
                 log.warn("Unauthorized delete attempt by user ID: {} for message ID: {}", user.getId(), messageId);
-                throw new RuntimeException("User cannot delete this message.");
+                throw new IllegalStateException("User cannot delete this message.");
             }
         }
         log.warn("Message with ID: {} not found for deletion", messageId);
-        throw new RuntimeException("Message not found");
+        throw new EntityNotFoundException("Message not found");
     }
 
     public List<Message> findMessages(String senderId, String recipientId) {
@@ -147,7 +147,7 @@ public class MessageService {
             return MessageMapper.INSTANCE.toDto(pinnedMessage);
         } else {
             log.warn("Message with ID: {} not found for pin/unpin", messageToPin.getMessageId());
-            throw new RuntimeException("Message not found");
+            throw new EntityNotFoundException("Message not found");
         }
     }
 }

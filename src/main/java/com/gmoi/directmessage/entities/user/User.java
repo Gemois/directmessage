@@ -1,14 +1,10 @@
 package com.gmoi.directmessage.entities.user;
 
 
+import com.gmoi.directmessage.entities.Auditable;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.*;
-import org.springframework.data.annotation.Version;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,7 +21,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class User implements UserDetails {
+@EqualsAndHashCode(callSuper = false)
+public class User extends Auditable implements UserDetails {
     @Id
     @GeneratedValue()
     private Long id;
@@ -35,6 +32,8 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String phone;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
@@ -43,28 +42,9 @@ public class User implements UserDetails {
     private byte[] photo;
     private LocalDateTime lastActivityDate;
 
-    @CreatedBy
-    @Column(updatable = false)
-    private Long createdBy;
-
-    @LastModifiedBy
-    @Column(insertable = false)
-    private Long lastModifiedBy;
-
-    @Version
-    private long version;
-
-    @LastModifiedDate
-    @Column(insertable = false)
-    private LocalDateTime modifiedDate;
-
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("USER"));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

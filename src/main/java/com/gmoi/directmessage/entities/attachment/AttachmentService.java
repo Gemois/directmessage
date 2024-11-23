@@ -2,6 +2,7 @@ package com.gmoi.directmessage.entities.attachment;
 
 import com.gmoi.directmessage.aws.S3Service;
 import com.gmoi.directmessage.mappers.AttachmentMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class AttachmentService {
             return AttachmentMapper.INSTANCE.toDto(savedAttachment);
         } catch (Exception e) {
             log.error("Failed to upload file: {}", file.getOriginalFilename(), e);
-            throw new RuntimeException("File upload failed", e);
+            throw new IllegalStateException("File upload failed", e);
         }
     }
 
@@ -44,7 +45,7 @@ public class AttachmentService {
         Attachment attachment = attachmentRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("Attachment not found with ID: {}", id);
-                    return new RuntimeException("Attachment not found");
+                    return new EntityNotFoundException("Attachment not found");
                 });
 
         try (InputStream inputStream = s3Service.getFile(attachment.getId().toString())) {
@@ -67,7 +68,7 @@ public class AttachmentService {
                     .body(content);
         } catch (Exception e) {
             log.error("Failed to download file with ID: {}", id, e);
-            throw new RuntimeException("Failed to download file", e);
+            throw new IllegalStateException("Failed to download file", e);
         }
     }
 
@@ -76,7 +77,7 @@ public class AttachmentService {
         Attachment attachment = attachmentRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("Attachment not found with ID: {}", id);
-                    return new RuntimeException("Attachment not found");
+                    return new EntityNotFoundException("Attachment not found");
                 });
 
         try {
@@ -85,7 +86,7 @@ public class AttachmentService {
             log.info("File deleted successfully with ID: {}", id);
         } catch (Exception e) {
             log.error("Failed to delete file with ID: {}", id, e);
-            throw new RuntimeException("Failed to delete file", e);
+            throw new IllegalStateException("Failed to delete file", e);
         }
     }
 }

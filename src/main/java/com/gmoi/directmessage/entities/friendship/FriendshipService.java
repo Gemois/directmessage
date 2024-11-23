@@ -11,6 +11,7 @@ import com.gmoi.directmessage.mail.MailService;
 import com.gmoi.directmessage.mappers.FriendRequestMapper;
 import com.gmoi.directmessage.mappers.UserMapper;
 import com.gmoi.directmessage.utils.RequestUtil;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -95,7 +96,7 @@ public class FriendshipService {
     private FriendRequest getFriendReqest(Long requestId) {
         FriendRequest request = friendRequestRepository.findById(requestId).orElseThrow(() -> {
             log.warn("Friend request with ID {} not found", requestId);
-            return new IllegalArgumentException("Request not found");
+            return new EntityNotFoundException("Request not found");
         });
 
         if (request.getStatus() != FriendRequestStatus.PENDING) {
