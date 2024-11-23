@@ -93,11 +93,10 @@ public class FriendshipService {
     }
 
     private FriendRequest getFriendReqest(Long requestId) {
-        FriendRequest request = friendRequestRepository.findById(requestId).orElseThrow(
-                () -> {
-                    log.warn("Friend request with ID {} not found", requestId);
-                    return new IllegalArgumentException("Request not found");
-                });
+        FriendRequest request = friendRequestRepository.findById(requestId).orElseThrow(() -> {
+            log.warn("Friend request with ID {} not found", requestId);
+            return new IllegalArgumentException("Request not found");
+        });
 
         if (request.getStatus() != FriendRequestStatus.PENDING) {
             log.warn("Friend request with ID {} is not pending. Current status: {}", requestId, request.getStatus());

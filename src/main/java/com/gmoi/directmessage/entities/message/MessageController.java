@@ -71,5 +71,4 @@ public class MessageController {
         List<MessageDTO> messages = messageService.searchMessages(chatId, query);
         return ResponseEntity.ok(messages);
     }
-
 }
