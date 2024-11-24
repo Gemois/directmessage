@@ -2,6 +2,7 @@ package com.gmoi.directmessage.config;
 
 import com.gmoi.directmessage.auditing.ApplicationAuditAware;
 import com.gmoi.directmessage.entities.user.UserRepository;
+import com.warrenstrange.googleauth.GoogleAuthenticator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,4 +50,11 @@ public class ApplicationConfig {
     public AuditorAware<Long> auditorAware() {
         return new ApplicationAuditAware();
     }
+
+    @Bean
+    public GoogleAuthenticator googleAuthenticator() {
+        return new GoogleAuthenticator();
+    }
+
+
 }

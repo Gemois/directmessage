@@ -3,11 +3,16 @@ package com.gmoi.directmessage.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmoi.directmessage.auth.confirmation.ConfirmationToken;
 import com.gmoi.directmessage.auth.confirmation.ConfirmationTokenService;
+import com.gmoi.directmessage.auth.tfa.QRCodeService;
+import com.gmoi.directmessage.auth.tfa.TwoFactorAuthService;
+import com.gmoi.directmessage.auth.tfa.TwoFactorResponse;
 import com.gmoi.directmessage.entities.user.User;
 import com.gmoi.directmessage.entities.user.UserRepository;
 import com.gmoi.directmessage.entities.user.UserRole;
 import com.gmoi.directmessage.mail.MailService;
 import com.gmoi.directmessage.utils.RequestUtil;
+import com.google.zxing.WriterException;
+import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +36,10 @@ public class AuthenticationService {
 
     private final JwtService jwtService;
     private final MailService mailService;
+    private final QRCodeService qrCodeService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TwoFactorAuthService twoFactorAuthService;
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
 
@@ -140,5 +147,41 @@ public class AuthenticationService {
         confirmationTokenService.retireTokens(user);
         String token = confirmationTokenService.createConfirmationToken(user);
         mailService.sendConfirmationEmail(user, confirmationTokenService.buildVerificationLink(token));
+    }
+
+
+    public TwoFactorResponse enable2FA() {
+        GoogleAuthenticatorKey key = twoFactorAuthService.generateSecretKey();
+
+        User user = RequestUtil.getCurrentUser();
+        user.setTwoFactorSecret(key.getKey());
+        user.setTwoFactorEnabled(true);
+        userRepository.save(user);
+
+        String qrCodeUrl = twoFactorAuthService.generateQRCode(key, user);
+        String encodedQRCode;
+        try {
+            encodedQRCode = qrCodeService.generateQRCode(qrCodeUrl);
+        } catch (WriterException e) {
+            throw new IllegalStateException("QR code generation failed", e);
+        }
+
+        return TwoFactorResponse.builder()
+                .secretKey(key.getKey())
+                .qrCodeImage(encodedQRCode)
+                .qrCodeUrl(qrCodeUrl)
+                .build();
+    }
+
+    public void verify2FA(int otp) {
+        User user = RequestUtil.getCurrentUser();
+        String secretKey = user.getTwoFactorSecret();
+
+        boolean isOtpValid = twoFactorAuthService.validateOTP(secretKey, otp);
+        if (!isOtpValid) {
+            throw new RuntimeException("Invalid OTP");
+        }
+
+        userRepository.save(user);
     }
 }

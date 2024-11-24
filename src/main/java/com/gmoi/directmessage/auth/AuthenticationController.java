@@ -1,5 +1,6 @@
 package com.gmoi.directmessage.auth;
 
+import com.gmoi.directmessage.auth.tfa.TwoFactorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -41,5 +42,16 @@ public class AuthenticationController {
     @PostMapping("/refresh-token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         service.refreshToken(request, response);
+    }
+
+    @PostMapping("/enable-2fa")
+    public ResponseEntity<TwoFactorResponse> enable2FA() {
+        return ResponseEntity.ok(service.enable2FA());
+    }
+
+    @PostMapping("/verify-2fa")
+    public ResponseEntity<Void> verify2FA(@RequestParam("otp") int otp) {
+        service.verify2FA(otp);
+        return ResponseEntity.ok().build();
     }
 }

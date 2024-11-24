@@ -83,3 +83,6 @@ message:
 general:
   host: localhost
   port: 8080
+
+tfa:
+  issuer: directmessage

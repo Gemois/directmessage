@@ -35,6 +35,9 @@ public class User extends Auditable implements UserDetails {
 
     private boolean isActivated;
 
+    private String twoFactorSecret;
+    private boolean twoFactorEnabled;
+
     @Enumerated(EnumType.STRING)
     private UserStatus status;
     @Lob
