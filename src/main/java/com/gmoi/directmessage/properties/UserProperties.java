@@ -11,6 +11,7 @@ public class UserProperties {
 
     private Status status = new Status();
     private Admin admin = new Admin();
+    private ConfirmationToken confirmationToken = new ConfirmationToken();
 
     @Data
     public static class Status {
@@ -22,4 +23,10 @@ public class UserProperties {
         private String email;
         private String password;
     }
+
+    @Data
+    public static class ConfirmationToken {
+        private long expirationMinutes;
+    }
+
 }

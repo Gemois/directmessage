@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +26,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FriendshipService {
 
-    private final UserRepository userRepository;
-    private final FriendRequestRepository friendRequestRepository;
-    private final FriendshipRepository friendshipRepository;
     private final MailService mailService;
+    private final UserRepository userRepository;
+    private final FriendshipRepository friendshipRepository;
+    private final FriendRequestRepository friendRequestRepository;
 
     @Transactional
     public void sendFriendRequest(Long recipientId) {
@@ -55,13 +56,14 @@ public class FriendshipService {
 
         friendRequestRepository.save(friendRequest);
         log.info("Friend request saved successfully: {}", friendRequest);
+        updateLastActivity(sender);
 
         mailService.sendFriendRequestEmail(friendRequest);
     }
 
     @Transactional
     public void acceptFriendRequest(Long requestId) {
-        FriendRequest request = getFriendReqest(requestId);
+        FriendRequest request = getFriendRequest(requestId);
 
         Friendship friendship1 = new Friendship();
         friendship1.setUser1(request.getSender());
@@ -79,6 +81,7 @@ public class FriendshipService {
 
         request.setStatus(FriendRequestStatus.ACCEPTED);
         friendRequestRepository.save(request);
+        updateLastActivity(request.getRecipient());
 
         log.info("Friend request updated to ACCEPTED: {}", request);
         mailService.sendFriendRequestAcceptedEmail(request);
@@ -86,14 +89,15 @@ public class FriendshipService {
 
     @Transactional
     public void rejectFriendRequest(Long requestId) {
-        FriendRequest request = getFriendReqest(requestId);
+        FriendRequest request = getFriendRequest(requestId);
 
         request.setStatus(FriendRequestStatus.REJECTED);
         friendRequestRepository.save(request);
+        updateLastActivity(request.getRecipient());
         log.info("Friend request updated to REJECTED: {}", request);
     }
 
-    private FriendRequest getFriendReqest(Long requestId) {
+    private FriendRequest getFriendRequest(Long requestId) {
         FriendRequest request = friendRequestRepository.findById(requestId).orElseThrow(() -> {
             log.warn("Friend request with ID {} not found", requestId);
             return new EntityNotFoundException("Request not found");
@@ -120,4 +124,12 @@ public class FriendshipService {
         log.debug("Pending friend requests fetched for user {}: {}", user.getEmail(), friendRequests);
         return FriendRequestMapper.INSTANCE.toDto(friendRequests);
     }
+
+
+    private void updateLastActivity(User user) {
+        user.setLastActivityDate(LocalDateTime.now());
+        userRepository.save(user);
+    }
+
+
 }

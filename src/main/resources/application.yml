@@ -68,6 +68,8 @@ aws:
   secret-access-key: ${AWS_SECRET_ACCESS_KEY}
 
 user:
+  confirmation-token:
+    expiration-minutes: 15
   status:
     inactive-threshold-minutes: 30
   admin:
@@ -77,3 +79,7 @@ user:
 message:
   edit-minutes: 5
   delete-minutes: 5
+
+general:
+  host: localhost
+  port: 8080

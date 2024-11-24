@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .error(400)
                 .message("Request Validation failed")
-                .details(errors.isEmpty() ? errors : ex.getMessage())
+                .details(!errors.isEmpty() ? errors : ex.getMessage())
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);

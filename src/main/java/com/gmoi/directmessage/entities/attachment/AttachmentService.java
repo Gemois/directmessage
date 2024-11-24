@@ -1,7 +1,10 @@
 package com.gmoi.directmessage.entities.attachment;
 
 import com.gmoi.directmessage.aws.S3Service;
+import com.gmoi.directmessage.entities.user.User;
+import com.gmoi.directmessage.entities.user.UserService;
 import com.gmoi.directmessage.mappers.AttachmentMapper;
+import com.gmoi.directmessage.utils.RequestUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,15 +19,20 @@ import java.io.InputStream;
 public class AttachmentService {
 
     private final S3Service s3Service;
+    private final UserService userService;
     private final AttachmentRepository attachmentRepository;
 
     public AttachmentDTO uploadFile(MultipartFile file) {
         log.info("Starting file upload: {}", file.getOriginalFilename());
         try {
+            User user = RequestUtil.getCurrentUser();
+
+
             Attachment attachment = Attachment.builder()
                     .fileName(file.getOriginalFilename())
                     .fileType(file.getContentType())
                     .size(file.getSize())
+                    .owner(user)
                     .build();
 
             Attachment savedAttachment = attachmentRepository.save(attachment);
@@ -33,6 +41,7 @@ public class AttachmentService {
             s3Service.uploadFile(savedAttachment.getId().toString(), file);
             log.info("File uploaded to S3 with ID: {}", savedAttachment.getId());
 
+            userService.updateLastActivity(user);
             return AttachmentMapper.INSTANCE.toDto(savedAttachment);
         } catch (Exception e) {
             log.error("Failed to upload file: {}", file.getOriginalFilename(), e);
@@ -49,6 +58,7 @@ public class AttachmentService {
                 });
 
         try (InputStream inputStream = s3Service.getFile(attachment.getId().toString())) {
+            User user = RequestUtil.getCurrentUser();
             byte[] content = inputStream.readAllBytes();
 
             String contentType = "application/octet-stream";
@@ -60,8 +70,8 @@ public class AttachmentService {
             } else if (fileType.endsWith(".pdf")) {
                 contentType = "application/pdf";
             }
-
             log.info("File downloaded successfully: {}", attachment.getFileName());
+            userService.updateLastActivity(user);
             return ResponseEntity.ok()
                     .header("Content-Disposition", "attachment; filename=\"" + attachment.getFileName() + "\"")
                     .header("Content-Type", contentType)

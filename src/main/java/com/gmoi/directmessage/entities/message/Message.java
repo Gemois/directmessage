@@ -4,7 +4,6 @@ import com.gmoi.directmessage.entities.Auditable;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@EntityListeners(AuditingEntityListener.class)
 public class Message extends Auditable {
     @Id
     @GeneratedValue()

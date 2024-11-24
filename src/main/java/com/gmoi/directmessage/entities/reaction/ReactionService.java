@@ -3,6 +3,7 @@ package com.gmoi.directmessage.entities.reaction;
 import com.gmoi.directmessage.entities.message.Message;
 import com.gmoi.directmessage.entities.message.MessageRepository;
 import com.gmoi.directmessage.entities.user.User;
+import com.gmoi.directmessage.entities.user.UserService;
 import com.gmoi.directmessage.utils.RequestUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReactionService {
 
-    private final ReactionRepository reactionRepository;
+    private final UserService userService;
     private final MessageRepository messageRepository;
+    private final ReactionRepository reactionRepository;
 
     public List<ReactionDTO> getReactions(String messageId) {
         log.info("Fetching reactions for messageId: {}", messageId);
@@ -60,6 +62,7 @@ public class ReactionService {
         reaction.setUser(user);
         reaction.setEmoji(emoji);
         reactionRepository.save(reaction);
+        userService.updateLastActivity(user);
 
         log.info("Reaction '{}' added to messageId: {} by userId: {}", emoji, messageId, user.getId());
     }
@@ -76,6 +79,7 @@ public class ReactionService {
                 });
 
         reactionRepository.delete(reaction);
+        userService.updateLastActivity(user);
         log.info("Reaction '{}' removed from messageId: {} by userId: {}", emoji, messageId, user.getId());
     }
 

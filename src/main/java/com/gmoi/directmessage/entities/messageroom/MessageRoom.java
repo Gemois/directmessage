@@ -4,7 +4,6 @@ import com.gmoi.directmessage.entities.Auditable;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @Entity
@@ -12,7 +11,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@EntityListeners(AuditingEntityListener.class)
 public class MessageRoom extends Auditable {
     @Id
     @GeneratedValue()
