@@ -65,8 +65,8 @@ dependencies {
 
 	// 2fa
 	implementation 'com.warrenstrange:googleauth:1.5.0'
-	implementation 'com.google.zxing:core:3.5.3'
-	implementation 'com.google.zxing:javase:3.5.3'
+
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 	// Test dependencies
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -56,5 +56,4 @@ public class ApplicationConfig {
         return new GoogleAuthenticator();
     }
 
-
 }

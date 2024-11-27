@@ -1,6 +1,8 @@
 package com.gmoi.directmessage.entities.attachment;
 
 import com.gmoi.directmessage.aws.S3Service;
+import com.gmoi.directmessage.entities.messageroom.MessageRoom;
+import com.gmoi.directmessage.entities.messageroom.MessageRoomRepository;
 import com.gmoi.directmessage.entities.user.User;
 import com.gmoi.directmessage.entities.user.UserService;
 import com.gmoi.directmessage.mappers.AttachmentMapper;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -21,8 +24,9 @@ public class AttachmentService {
     private final S3Service s3Service;
     private final UserService userService;
     private final AttachmentRepository attachmentRepository;
+    private final MessageRoomRepository messageRoomRepository;
 
-    public AttachmentDTO uploadFile(MultipartFile file) {
+    public AttachmentDTO uploadFile(MultipartFile file, String chatId) {
         log.info("Starting file upload: {}", file.getOriginalFilename());
         try {
             User user = RequestUtil.getCurrentUser();
@@ -32,6 +36,7 @@ public class AttachmentService {
                     .fileName(file.getOriginalFilename())
                     .fileType(file.getContentType())
                     .size(file.getSize())
+                    .chatId(chatId)
                     .owner(user)
                     .build();
 
@@ -90,6 +95,10 @@ public class AttachmentService {
                     return new EntityNotFoundException("Attachment not found");
                 });
 
+        if (!attachment.getOwner().equals(RequestUtil.getCurrentUser())) {
+            throw new IllegalStateException("User not authorized to delete attachment");
+        }
+
         try {
             s3Service.deleteFile(attachment.getId().toString());
             attachmentRepository.delete(attachment);
@@ -98,5 +107,20 @@ public class AttachmentService {
             log.error("Failed to delete file with ID: {}", id, e);
             throw new IllegalStateException("Failed to delete file", e);
         }
+    }
+
+    public List<AttachmentDTO> getAttachmentsByChatId(String chatId) {
+
+        MessageRoom messageRoom = messageRoomRepository.findByChatId(chatId).orElseThrow(
+                () -> new EntityNotFoundException("Message room not found")
+        );
+
+        if (RequestUtil.getCurrentUser().getId().toString().equals(messageRoom.getRecipientId()) ||
+                RequestUtil.getCurrentUser().getId().toString().equals(messageRoom.getSenderId())) {
+            throw new IllegalStateException("Not allowed to get shared attachments for this message room");
+        }
+
+        List<Attachment> attachments = attachmentRepository.findByChatId(chatId);
+        return AttachmentMapper.INSTANCE.toDto(attachments);
     }
 }

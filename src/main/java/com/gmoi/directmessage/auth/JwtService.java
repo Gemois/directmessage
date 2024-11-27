@@ -49,8 +49,15 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public String generateToken(UserDetails userDetails, boolean tfaCompleted) {
+        return buildToken(userDetails, jwtProperties.getJwtExpiration(), tfaCompleted);
+    }
+
     public String generateToken(UserDetails userDetails) {
         return buildToken(userDetails, jwtProperties.getJwtExpiration());
+    }
+    public String generateRefreshToken(UserDetails userDetails, boolean tfaCompleted) {
+        return buildToken(userDetails, jwtProperties.getJwtRefreshExpiration(), tfaCompleted);
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
@@ -58,10 +65,15 @@ public class JwtService {
     }
 
     public String buildToken(UserDetails userDetails, long expiration) {
+        return buildToken(userDetails, expiration, false);
+    }
+
+    public String buildToken(UserDetails userDetails, long expiration, boolean tfaCompleted) {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))
+                .claim("twoFactorComplete", tfaCompleted)
                 .signWith(getSignInKey())
                 .compact();
     }

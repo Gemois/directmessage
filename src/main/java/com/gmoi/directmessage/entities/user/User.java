@@ -28,6 +28,7 @@ public class User extends Auditable implements UserDetails {
     private String lastName;
     private String displayName;
     private String email;
+    private boolean emailVerified;
     private String password;
     private String phone;
     @Enumerated(EnumType.STRING)
@@ -58,10 +59,5 @@ public class User extends Auditable implements UserDetails {
     @Override
     public String getUsername() {
         return email;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isActivated;
     }
 }

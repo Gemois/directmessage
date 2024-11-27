@@ -12,5 +12,4 @@ import lombok.RequiredArgsConstructor;
 public class TwoFactorResponse {
     private String secretKey;
     private String qrCodeUrl;
-    private String qrCodeImage;
 }

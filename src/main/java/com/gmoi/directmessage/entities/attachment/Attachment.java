@@ -19,6 +19,7 @@ public class Attachment extends Auditable {
     private String fileName;
     private String fileType;
     private long size;
+    private String chatId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
