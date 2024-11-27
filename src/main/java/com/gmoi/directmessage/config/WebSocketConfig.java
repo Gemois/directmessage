@@ -1,7 +1,7 @@
 package com.gmoi.directmessage.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gmoi.directmessage.auth.AuthHandshakeInterceptor;
+import com.gmoi.directmessage.auth.services.AuthHandshakeInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.DefaultContentTypeResolver;

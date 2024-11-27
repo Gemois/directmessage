@@ -1,7 +1,7 @@
 package com.gmoi.directmessage.mail;
 
-import com.gmoi.directmessage.entities.friendrequest.FriendRequest;
-import com.gmoi.directmessage.entities.user.User;
+import com.gmoi.directmessage.models.FriendRequest;
+import com.gmoi.directmessage.models.User;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

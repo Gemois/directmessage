@@ -1,7 +1,7 @@
 package com.gmoi.directmessage.mappers;
 
-import com.gmoi.directmessage.entities.friendrequest.FriendRequest;
-import com.gmoi.directmessage.entities.friendrequest.FriendRequestDTO;
+import com.gmoi.directmessage.models.FriendRequest;
+import com.gmoi.directmessage.dtos.FriendRequestDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
