@@ -5,11 +5,11 @@ import com.gmoi.directmessage.auth.repositories.ConfirmationTokenRepository;
 import com.gmoi.directmessage.mail.MailService;
 import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.properties.GeneralProperties;
-import com.gmoi.directmessage.properties.UserProperties;
 import com.gmoi.directmessage.repositories.UserRepository;
 import com.gmoi.directmessage.utils.SessionUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,7 +23,7 @@ public class ConfirmationService {
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final GeneralProperties generalProperties;
-    private final UserProperties userProperties;
+    private final ServerProperties serverProperties;
     private final UserRepository userRepository;
     private final MailService mailService;
 
@@ -75,7 +75,7 @@ public class ConfirmationService {
     public String createConfirmationToken(User user) {
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = ConfirmationToken.builder()
-                .expiresAt(LocalDateTime.now().plusMinutes(userProperties.getConfirmationToken().getExpirationMinutes()))
+                .expiresAt(LocalDateTime.now().plusMinutes(generalProperties.getUsers().getConfirmationToken().getExpirationMinutes()))
                 .token(token)
                 .user(user)
                 .build();
@@ -85,7 +85,7 @@ public class ConfirmationService {
     }
 
     public String buildVerificationLink(String token) {
-        String baseUrl = "http://" + generalProperties.getHost() + (generalProperties.getPort()  != 0 ? ":" + generalProperties.getPort() : "");
+        String baseUrl = "http://" + serverProperties.getAddress() + (serverProperties.getPort()  != 0 ? ":" + serverProperties.getPort() : "");
         return  baseUrl + "/api/v1/auth/email/confirm?token=" + token;
     }
 }

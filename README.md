@@ -57,6 +57,14 @@ Ensure that you have filled in all the necessary configuration values in the `ap
       port: <MAIL_PORT>
       username: <MAIL_USERNAME>
       password: <MAIL_PASSWORD>
+  ```
+    - If you don't have an SMTP server and need a local solution for email testing, you can use Maildev. It's an easy-to-use SMTP server that captures sent emails for debugging purposes.
+      1. **Install Maildev**: You can install Maildev via Docker. If you don't have Docker installed, follow the Docker installation guide.
+
+      2. **Run the following command to pull and start Maildev**:
+         ```bash
+         docker run -d -p 1080:1080 -p 1025:1025 maildev/maildev
+          ```
 - JWT secret key and expiration times
    ```yaml
     jwt:
@@ -72,6 +80,20 @@ Ensure that you have filled in all the necessary configuration values in the `ap
         region: <S3_REGION>
         accessKeyId: <AWS_ACCESS_KEY_ID>
         secretAccessKey: <AWS_SECRET_ACCESS_KEY>
+- General configuration
+    ```yaml
+    general:
+      messages:
+        delete-minutes: <DELETE_WINDOW_IN_MINUTES>  
+        edit-minutes: <EDIT_WINDOW_IN_MINUTES> 
+      users:
+        admin:
+          email: <ADMIN_EMAIL>
+          password: <ADMIN_PASSWORD>
+        status:
+          inactive-threshold-minutes: <INACTIVE_WINDOW>
+        confirmation-token:
+          expiration-minutes: <CONFIRMATION_TOKEN_EXPIRATION_TIME>
   
 ### 2. Run PostgreSQL with Docker Compose
 The project includes a `docker-compose.yml` file that can be used to easily run a PostgreSQL instance. To do so, follow these steps:

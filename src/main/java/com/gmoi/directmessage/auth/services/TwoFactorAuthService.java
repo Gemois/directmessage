@@ -3,7 +3,6 @@ package com.gmoi.directmessage.auth.services;
 import com.gmoi.directmessage.auth.dtos.AuthenticationResponse;
 import com.gmoi.directmessage.auth.dtos.TwoFactorResponse;
 import com.gmoi.directmessage.models.User;
-import com.gmoi.directmessage.properties.TfaProperties;
 import com.gmoi.directmessage.repositories.UserRepository;
 import com.gmoi.directmessage.utils.SessionUtil;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
@@ -16,10 +15,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TwoFactorAuthService {
 
-    private final TfaProperties tfaProperties;
+    private static final String ISSUER = "DirectMessage";
+
+    private final JwtService jwtService;
     private final GoogleAuthenticator gAuth;
     private final UserRepository userRepository;
-    private final JwtService jwtService;
 
     public TwoFactorResponse enable2FA() {
         GoogleAuthenticatorKey key = generateSecretKey();
@@ -80,7 +80,7 @@ public class TwoFactorAuthService {
     }
 
     public String generateQRCodeLink(GoogleAuthenticatorKey secretKey, User user) {
-       return GoogleAuthenticatorQRGenerator.getOtpAuthURL(tfaProperties.getIssuer(), user.getEmail(), secretKey);
+       return GoogleAuthenticatorQRGenerator.getOtpAuthURL(ISSUER, user.getEmail(), secretKey);
     }
 
     public boolean validateOTP(String secretKey, int otp) {

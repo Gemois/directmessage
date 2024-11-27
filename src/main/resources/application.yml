@@ -1,8 +1,11 @@
+server:
+  address: localhost
+  port: 8080
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/directmessage
-    username: user
-    password: password
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -14,10 +17,10 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   mail:
-    host: localhost
-    port: 1025
-    username: user
-    password: pass
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -56,7 +59,7 @@ logging:
       total-size-cap: 10MB
 
 jwt:
-  secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  secret-key: ${JWT_SECRET-KEY}
   jwt-expiration: 33333333333333333
   jwt-refresh-expiration: 99999999999999999
 
@@ -67,22 +70,15 @@ aws:
   access-key-id: ${AWS_ACCESS_KEY_ID}
   secret-access-key: ${AWS_SECRET_ACCESS_KEY}
 
-user:
-  confirmation-token:
-    expiration-minutes: 15
-  status:
-    inactive-threshold-minutes: 30
-  admin:
-    email: admin@admin.com
-    password: admin
-
-message:
-  edit-minutes: 5
-  delete-minutes: 5
-
 general:
-  host: localhost
-  port: 8080
-
-tfa:
-  issuer: directmessage
+  messages:
+    delete-minutes: 5
+    edit-minutes: 5
+  users:
+    admin:
+      email: ${GENERAL_USERS_ADMIN_EMAIL}
+      password: ${GENERAL_USERS_ADMIN_PASSWORD}
+    status:
+      inactive-threshold-minutes: 30
+    confirmation-token:
+      expiration-minutes: 15

@@ -4,7 +4,7 @@ import com.gmoi.directmessage.controllers.MessageDestination;
 import com.gmoi.directmessage.dtos.UserDTO;
 import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.models.UserStatus;
-import com.gmoi.directmessage.properties.UserProperties;
+import com.gmoi.directmessage.properties.GeneralProperties;
 import com.gmoi.directmessage.repositories.UserRepository;
 import com.gmoi.directmessage.services.FriendshipService;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +22,14 @@ import java.util.List;
 public class UserStatusScheduler {
 
     private final UserRepository userRepository;
-    private final UserProperties userProperties;
+    private final GeneralProperties generalProperties;
     private final FriendshipService friendshipService;
     private final SimpMessagingTemplate messagingTemplate;
 
     @Scheduled(fixedRate = 60000)
     public void checkForIdleUsers() {
         log.info("Starting check for idle users.");
-        LocalDateTime threshold = LocalDateTime.now().minusMinutes(userProperties.getStatus().getInactiveThresholdMinutes());
+        LocalDateTime threshold = LocalDateTime.now().minusMinutes(generalProperties.getUsers().getStatus().getInactiveThresholdMinutes());
         List<User> activeUsers = userRepository.findByStatus(UserStatus.ONLINE);
 
         for (User user : activeUsers) {

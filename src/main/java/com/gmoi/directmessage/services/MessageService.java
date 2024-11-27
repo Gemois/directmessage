@@ -7,7 +7,7 @@ import com.gmoi.directmessage.dtos.ReadNotification;
 import com.gmoi.directmessage.mappers.MessageMapper;
 import com.gmoi.directmessage.models.Message;
 import com.gmoi.directmessage.models.User;
-import com.gmoi.directmessage.properties.MessageProperties;
+import com.gmoi.directmessage.properties.GeneralProperties;
 import com.gmoi.directmessage.repositories.MessageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class MessageService {
     private final MessageRepository repository;
     private final MessageRoomService chatRoomService;
     private final MessageRepository messageRepository;
-    private final MessageProperties messageProperties;
+    private final GeneralProperties generalProperties;
 
     public Message save(Message message) {
         log.info("Saving message from senderId: {} to recipientId: {}", message.getSenderId(), message.getRecipientId());
@@ -52,7 +52,7 @@ public class MessageService {
         if (existingMessageOpt.isPresent()) {
             if (existingMessageOpt.get().getSenderId().equals(user.getId().toString())) {
 
-            boolean canEdit = Duration.between(LocalDateTime.now(), existingMessageOpt.get().getCreatedAt()).toMinutes() < messageProperties.getEditMinutes();
+            boolean canEdit = Duration.between(LocalDateTime.now(), existingMessageOpt.get().getCreatedAt()).toMinutes() < generalProperties.getMessages().getEditMinutes();
 
             if (canEdit) {
                 Message existingMessage = existingMessageOpt.get();
@@ -82,7 +82,7 @@ public class MessageService {
         if (messageOpt.isPresent()) {
             if (messageOpt.get().getSenderId().equals(user.getId().toString())) {
 
-                boolean canDelete = Duration.between(LocalDateTime.now(), messageOpt.get().getCreatedAt()).toMinutes() < messageProperties.getDeleteMinutes();
+                boolean canDelete = Duration.between(LocalDateTime.now(), messageOpt.get().getCreatedAt()).toMinutes() < generalProperties.getMessages().getDeleteMinutes();
 
                 if (canDelete) {
                     Message message = messageOpt.get();
