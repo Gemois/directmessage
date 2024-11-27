@@ -2,7 +2,6 @@ package com.gmoi.directmessage.models;
 
 
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

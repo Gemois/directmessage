@@ -1,9 +1,9 @@
 package com.gmoi.directmessage.controllers;
 
 import com.gmoi.directmessage.dtos.UserDTO;
+import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.models.UserStatus;
 import com.gmoi.directmessage.services.FriendshipService;
-import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.services.UserService;
 import com.gmoi.directmessage.utils.SessionUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController()
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -27,8 +27,8 @@ public class UserController {
     private final SimpMessagingTemplate messagingTemplate;
 
     @GetMapping()
-    public ResponseEntity<UserDTO> getUser() {
-        return ResponseEntity.ok(userService.getUser());
+    public ResponseEntity<UserDTO> getUserDetails() {
+        return ResponseEntity.ok(userService.getUserDetails());
     }
 
     @DeleteMapping()
@@ -39,15 +39,6 @@ public class UserController {
     @PatchMapping()
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO updatedUser) {
         return ResponseEntity.ok(userService.updateUserDetails(updatedUser));
-    }
-
-    @MessageMapping("user/status")
-    public void updateUserStatus(@AuthenticationPrincipal Principal principal, @Payload UserStatus status) {
-        User updatedUser = userService.updateUserStatus(SessionUtil.getCurrentUser(principal), status);
-
-        for (UserDTO friend : friendshipService.getFriends(updatedUser)) {
-            messagingTemplate.convertAndSendToUser(friend.getId().toString(), MessageDestination.STATUS.getDestination(), updatedUser);
-        }
     }
 
     @GetMapping("/all")
@@ -62,7 +53,16 @@ public class UserController {
 
     @GetMapping("/search")
     public ResponseEntity<List<UserDTO>> searchUsers(@RequestParam() String query) {
-        List<UserDTO> result = userService.searchUsers(query);
-        return ResponseEntity.ok(result);
+        List<UserDTO> users = userService.searchUsers(query);
+        return ResponseEntity.ok(users);
+    }
+
+    @MessageMapping("user/status")
+    public void updateUserStatus(@AuthenticationPrincipal Principal principal, @Payload UserStatus status) {
+        User updatedUser = userService.updateUserStatus(SessionUtil.getCurrentUser(principal), status);
+
+        for (UserDTO friend : friendshipService.getFriends(updatedUser)) {
+            messagingTemplate.convertAndSendToUser(friend.getId().toString(), MessageDestination.STATUS.getDestination(), updatedUser);
+        }
     }
 }

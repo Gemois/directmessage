@@ -1,12 +1,12 @@
 package com.gmoi.directmessage.schedulers;
 
+import com.gmoi.directmessage.controllers.MessageDestination;
 import com.gmoi.directmessage.dtos.UserDTO;
+import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.models.UserStatus;
+import com.gmoi.directmessage.properties.UserProperties;
 import com.gmoi.directmessage.repositories.UserRepository;
 import com.gmoi.directmessage.services.FriendshipService;
-import com.gmoi.directmessage.controllers.MessageDestination;
-import com.gmoi.directmessage.models.User;
-import com.gmoi.directmessage.properties.UserProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

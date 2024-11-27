@@ -27,13 +27,14 @@ public class AttachmentController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteFile(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteFile(@PathVariable Long id) {
         attachmentService.deleteFile(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/shared/{chatId}")
-    public ResponseEntity<List<AttachmentDTO>> getAttachmentsByChatId(@PathVariable String chatId) {
-        List<AttachmentDTO> attachments = attachmentService.getAttachmentsByChatId(chatId);
+    public ResponseEntity<List<AttachmentDTO>> getChatRoomAttachments(@PathVariable String chatId) {
+        List<AttachmentDTO> attachments = attachmentService.getChatRoomAttachments(chatId);
         return ResponseEntity.ok(attachments);
     }
 

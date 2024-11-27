@@ -5,6 +5,7 @@ import com.gmoi.directmessage.dtos.UserDTO;
 import com.gmoi.directmessage.services.FriendshipService;
 import com.gmoi.directmessage.utils.SessionUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,28 +18,32 @@ public class FriendshipController {
     private final FriendshipService friendshipService;
 
     @GetMapping()
-    public List<UserDTO> getFriends() {
-        return friendshipService.getFriends(SessionUtil.getCurrentUser());
+    public ResponseEntity<List<UserDTO>> getFriends() {
+        List<UserDTO> friends = friendshipService.getFriends(SessionUtil.getCurrentUser());
+        return ResponseEntity.ok(friends);
     }
 
     @PostMapping("/friend-request/{recipientId}")
-    public void sendFriendRequest(@PathVariable Long recipientId) {
+    public ResponseEntity<Void> sendFriendRequest(@PathVariable Long recipientId) {
         friendshipService.sendFriendRequest(recipientId);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/friend-request/{requestId}/accept")
-    public void acceptFriendRequest(@PathVariable Long requestId) {
+    public ResponseEntity<Void> acceptFriendRequest(@PathVariable Long requestId) {
         friendshipService.acceptFriendRequest(requestId);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/friend-request/{requestId}/reject")
-    public void rejectFriendRequest(@PathVariable Long requestId) {
+    public ResponseEntity<Void> rejectFriendRequest(@PathVariable Long requestId) {
         friendshipService.rejectFriendRequest(requestId);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/pending-requests")
-    public List<FriendRequestDTO> getPendingRequests() {
-        return friendshipService.getPendingFriendRequests(SessionUtil.getCurrentUser());
+    public ResponseEntity<List<FriendRequestDTO>> getPendingRequests() {
+        List<FriendRequestDTO> pendingRequests = friendshipService.getPendingFriendRequests(SessionUtil.getCurrentUser());
+        return ResponseEntity.ok(pendingRequests);
     }
-
 }

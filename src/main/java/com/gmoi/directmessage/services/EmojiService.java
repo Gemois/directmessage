@@ -1,7 +1,7 @@
 package com.gmoi.directmessage.services;
 
-import com.gmoi.directmessage.repositories.EmojiRepository;
 import com.gmoi.directmessage.models.Emoji;
+import com.gmoi.directmessage.repositories.EmojiRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;

@@ -1,8 +1,8 @@
 package com.gmoi.directmessage.auth.controllers;
 
 import com.gmoi.directmessage.auth.dtos.AuthenticationResponse;
-import com.gmoi.directmessage.auth.services.TwoFactorAuthService;
 import com.gmoi.directmessage.auth.dtos.TwoFactorResponse;
+import com.gmoi.directmessage.auth.services.TwoFactorAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

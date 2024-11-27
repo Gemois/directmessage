@@ -1,8 +1,8 @@
 package com.gmoi.directmessage.controllers;
 
 import com.gmoi.directmessage.dtos.*;
-import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.models.Message;
+import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.services.MessageService;
 import com.gmoi.directmessage.utils.SessionUtil;
 import lombok.RequiredArgsConstructor;
@@ -65,7 +65,7 @@ public class MessageController {
     }
 
     @GetMapping("/messages/{senderId}/{recipientId}")
-    public ResponseEntity<List<Message>> findChatMessages(@PathVariable String senderId, @PathVariable String recipientId) {
+    public ResponseEntity<List<Message>> findMessages(@PathVariable String senderId, @PathVariable String recipientId) {
         return ResponseEntity.ok(messageService.findMessages(senderId, recipientId));
     }
 

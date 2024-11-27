@@ -2,11 +2,11 @@ package com.gmoi.directmessage.auth.services;
 
 import com.gmoi.directmessage.auth.models.ConfirmationToken;
 import com.gmoi.directmessage.auth.repositories.ConfirmationTokenRepository;
-import com.gmoi.directmessage.models.User;
-import com.gmoi.directmessage.repositories.UserRepository;
 import com.gmoi.directmessage.mail.MailService;
+import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.properties.GeneralProperties;
 import com.gmoi.directmessage.properties.UserProperties;
+import com.gmoi.directmessage.repositories.UserRepository;
 import com.gmoi.directmessage.utils.SessionUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

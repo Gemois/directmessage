@@ -1,7 +1,7 @@
 package com.gmoi.directmessage.services;
 
-import com.gmoi.directmessage.repositories.MessageRoomRepository;
 import com.gmoi.directmessage.models.MessageRoom;
+import com.gmoi.directmessage.repositories.MessageRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

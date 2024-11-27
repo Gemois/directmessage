@@ -1,8 +1,8 @@
 package com.gmoi.directmessage.repositories;
 
+import com.gmoi.directmessage.models.FriendRequest;
 import com.gmoi.directmessage.models.FriendRequestStatus;
 import com.gmoi.directmessage.models.User;
-import com.gmoi.directmessage.models.FriendRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

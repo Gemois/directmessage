@@ -35,10 +35,9 @@ public class EmojiController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Emoji>> getAvailableEmojis(HttpServletRequest request) {
+    public ResponseEntity<List<Emoji>> getEmojis(HttpServletRequest request) {
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         List<Emoji> emojis = emojiService.getAllEmojis(baseUrl);
         return ResponseEntity.ok(emojis);
     }
-
 }

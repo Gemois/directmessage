@@ -1,5 +1,7 @@
-package com.gmoi.directmessage.models;
+package com.gmoi.directmessage.initializers;
 
+import com.gmoi.directmessage.models.User;
+import com.gmoi.directmessage.models.UserRole;
 import com.gmoi.directmessage.properties.UserProperties;
 import com.gmoi.directmessage.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;

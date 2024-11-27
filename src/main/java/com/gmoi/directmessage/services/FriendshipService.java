@@ -1,18 +1,14 @@
 package com.gmoi.directmessage.services;
 
-import com.gmoi.directmessage.repositories.FriendshipRepository;
-import com.gmoi.directmessage.models.FriendshipStatus;
-import com.gmoi.directmessage.models.FriendRequest;
 import com.gmoi.directmessage.dtos.FriendRequestDTO;
-import com.gmoi.directmessage.repositories.FriendRequestRepository;
-import com.gmoi.directmessage.models.FriendRequestStatus;
-import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.dtos.UserDTO;
-import com.gmoi.directmessage.repositories.UserRepository;
 import com.gmoi.directmessage.mail.MailService;
 import com.gmoi.directmessage.mappers.FriendRequestMapper;
 import com.gmoi.directmessage.mappers.UserMapper;
-import com.gmoi.directmessage.models.Friendship;
+import com.gmoi.directmessage.models.*;
+import com.gmoi.directmessage.repositories.FriendRequestRepository;
+import com.gmoi.directmessage.repositories.FriendshipRepository;
+import com.gmoi.directmessage.repositories.UserRepository;
 import com.gmoi.directmessage.utils.SessionUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;

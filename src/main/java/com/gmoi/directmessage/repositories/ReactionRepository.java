@@ -1,8 +1,8 @@
 package com.gmoi.directmessage.repositories;
 
 import com.gmoi.directmessage.models.Message;
-import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.models.Reaction;
+import com.gmoi.directmessage.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

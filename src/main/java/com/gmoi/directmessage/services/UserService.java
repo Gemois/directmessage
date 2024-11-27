@@ -1,10 +1,10 @@
 package com.gmoi.directmessage.services;
 
 import com.gmoi.directmessage.dtos.UserDTO;
-import com.gmoi.directmessage.repositories.UserRepository;
-import com.gmoi.directmessage.models.UserStatus;
 import com.gmoi.directmessage.mappers.UserMapper;
 import com.gmoi.directmessage.models.User;
+import com.gmoi.directmessage.models.UserStatus;
+import com.gmoi.directmessage.repositories.UserRepository;
 import com.gmoi.directmessage.utils.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final FriendshipService friendshipService;
 
-    public UserDTO getUser() {
+    public UserDTO getUserDetails() {
         log.info("Fetching current user details.");
         UserDTO userDto = UserMapper.INSTANCE.toDto(SessionUtil.getCurrentUser());
         log.info("Successfully fetched user details: {}", userDto);

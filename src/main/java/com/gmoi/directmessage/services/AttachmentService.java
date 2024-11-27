@@ -1,12 +1,12 @@
 package com.gmoi.directmessage.services;
 
 import com.gmoi.directmessage.dtos.AttachmentDTO;
-import com.gmoi.directmessage.repositories.AttachmentRepository;
-import com.gmoi.directmessage.models.MessageRoom;
-import com.gmoi.directmessage.repositories.MessageRoomRepository;
-import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.mappers.AttachmentMapper;
 import com.gmoi.directmessage.models.Attachment;
+import com.gmoi.directmessage.models.MessageRoom;
+import com.gmoi.directmessage.models.User;
+import com.gmoi.directmessage.repositories.AttachmentRepository;
+import com.gmoi.directmessage.repositories.MessageRoomRepository;
 import com.gmoi.directmessage.utils.SessionUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.InputStream;
 import java.util.List;
 
@@ -110,7 +111,7 @@ public class AttachmentService {
         }
     }
 
-    public List<AttachmentDTO> getAttachmentsByChatId(String chatId) {
+    public List<AttachmentDTO> getChatRoomAttachments(String chatId) {
 
         MessageRoom messageRoom = messageRoomRepository.findByChatId(chatId).orElseThrow(
                 () -> new EntityNotFoundException("Message room not found")

@@ -1,7 +1,7 @@
 package com.gmoi.directmessage.mappers;
 
-import com.gmoi.directmessage.models.Attachment;
 import com.gmoi.directmessage.dtos.AttachmentDTO;
+import com.gmoi.directmessage.models.Attachment;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

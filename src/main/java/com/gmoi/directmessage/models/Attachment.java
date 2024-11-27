@@ -1,7 +1,6 @@
 package com.gmoi.directmessage.models;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
 import lombok.*;
 
 @Data

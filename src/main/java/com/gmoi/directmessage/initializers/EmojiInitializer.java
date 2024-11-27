@@ -1,5 +1,6 @@
-package com.gmoi.directmessage.models;
+package com.gmoi.directmessage.initializers;
 
+import com.gmoi.directmessage.models.Emoji;
 import com.gmoi.directmessage.repositories.EmojiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
