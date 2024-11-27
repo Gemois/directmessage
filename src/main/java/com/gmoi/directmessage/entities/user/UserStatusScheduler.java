@@ -18,9 +18,9 @@ import java.util.List;
 public class UserStatusScheduler {
 
     private final UserRepository userRepository;
-    private final SimpMessagingTemplate messagingTemplate;
-    private final FriendshipService friendshipService;
     private final UserProperties userProperties;
+    private final FriendshipService friendshipService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Scheduled(fixedRate = 60000)
     public void checkForIdleUsers() {

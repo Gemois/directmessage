@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,7 @@ public class UserService {
         log.info("Searching for users with query: {}", query);
         List<User> users = userRepository.searchUsers(query);
         log.info("Found {} users matching the query.", users.size());
+        updateLastActivity(RequestUtil.getCurrentUser());
         return UserMapper.INSTANCE.toDto(users);
     }
 
@@ -82,9 +84,11 @@ public class UserService {
             existingUser.setPhoto(updatedUser.getPhoto());
         }
 
-        userRepository.save(existingUser);
+        User savedUser = userRepository.save(existingUser);
+        updateLastActivity(savedUser);
+
         log.info("Successfully updated user details.");
-        return UserMapper.INSTANCE.toDto(existingUser);
+        return UserMapper.INSTANCE.toDto(savedUser);
     }
 
     public Void deleteUser() {
@@ -107,7 +111,14 @@ public class UserService {
         }
 
         User updatedUser = userRepository.save(user);
+        updateLastActivity(user);
         log.info("User status updated to {}", updatedUser.getStatus());
         return updatedUser;
     }
+
+    public void updateLastActivity(User user) {
+        user.setLastActivityDate(LocalDateTime.now());
+        userRepository.save(user);
+    }
+
 }

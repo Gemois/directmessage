@@ -6,13 +6,11 @@ import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = false)
-@EntityListeners(AuditingEntityListener.class)
 public class FriendRequest extends Auditable {
     @Id
     @GeneratedValue()

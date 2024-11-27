@@ -5,7 +5,6 @@ import com.gmoi.directmessage.entities.Auditable;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +19,6 @@ import java.util.List;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(callSuper = false)
 public class User extends Auditable implements UserDetails {
     @Id
@@ -30,10 +28,16 @@ public class User extends Auditable implements UserDetails {
     private String lastName;
     private String displayName;
     private String email;
+    private boolean emailVerified;
     private String password;
     private String phone;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    private boolean isActivated;
+
+    private String twoFactorSecret;
+    private boolean twoFactorEnabled;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
@@ -55,9 +59,5 @@ public class User extends Auditable implements UserDetails {
     @Override
     public String getUsername() {
         return email;
-    }
-
-    public void updateLastActivity() {
-        setLastActivityDate(LocalDateTime.now());
     }
 }

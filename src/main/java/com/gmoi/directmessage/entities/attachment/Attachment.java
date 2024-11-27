@@ -1,10 +1,10 @@
 package com.gmoi.directmessage.entities.attachment;
 
 import com.gmoi.directmessage.entities.Auditable;
+import com.gmoi.directmessage.entities.user.User;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @Entity
@@ -12,7 +12,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@EntityListeners(AuditingEntityListener.class)
 public class Attachment extends Auditable {
     @Id
     @GeneratedValue()
@@ -20,4 +19,8 @@ public class Attachment extends Auditable {
     private String fileName;
     private String fileType;
     private long size;
+    private String chatId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User owner;
 }

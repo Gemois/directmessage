@@ -12,8 +12,12 @@ public interface AttachmentMapper {
 
     AttachmentMapper INSTANCE = Mappers.getMapper(AttachmentMapper.class);
 
-    AttachmentDTO toDto(Attachment user);
+    AttachmentDTO toDto(Attachment attachment);
 
-    List<AttachmentDTO> toDto(List<Attachment> users);
+    List<AttachmentDTO> toDto(List<Attachment> attachments);
+
+    Attachment toEntity(AttachmentDTO attachmentDTO);
+
+    List<Attachment> toEntity(List<AttachmentDTO> attachmentDTOS);
 
 }

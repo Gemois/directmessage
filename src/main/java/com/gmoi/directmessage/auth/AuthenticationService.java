@@ -1,6 +1,7 @@
 package com.gmoi.directmessage.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gmoi.directmessage.auth.confirmation.ConfirmationService;
 import com.gmoi.directmessage.entities.user.User;
 import com.gmoi.directmessage.entities.user.UserRepository;
 import com.gmoi.directmessage.entities.user.UserRole;
@@ -25,11 +26,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
+    private final JwtService jwtService;
+    private final MailService mailService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final MailService mailService;
+    private final ConfirmationService confirmationTokenService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         log.info("Registering user with email: {}", request.getEmail());
@@ -50,8 +52,10 @@ public class AuthenticationService {
         var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(savedUser);
         var refreshToken = jwtService.generateRefreshToken(user);
-
         mailService.sendRegistrationSuccessEmail(savedUser);
+
+        String token = confirmationTokenService.createConfirmationToken(user);
+        mailService.sendConfirmationEmail(savedUser, confirmationTokenService.buildVerificationLink(token));
 
         log.info("User registration successful: {}", savedUser.getEmail());
         return AuthenticationResponse.builder()
@@ -94,7 +98,11 @@ public class AuthenticationService {
             var user = userRepository.findByEmail(userEmail)
                     .orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
-                var accessToken = jwtService.generateToken(user);
+
+                Boolean twoFactorCompleted = jwtService.extractClaim(refreshToken, claims ->
+                        claims.get("twoFactorCompleted", Boolean.class));
+
+                var accessToken = jwtService.generateToken(user, twoFactorCompleted);
                 var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)

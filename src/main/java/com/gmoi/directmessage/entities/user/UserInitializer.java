@@ -16,8 +16,8 @@ import java.util.Optional;
 public class UserInitializer {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserProperties userProperties;
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public CommandLineRunner initAdminUser() {

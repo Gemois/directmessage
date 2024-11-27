@@ -20,8 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageController {
 
-    private final SimpMessagingTemplate messagingTemplate;
     private final MessageService messageService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/send-message")
     public void sendMessage(@Payload Message message) {

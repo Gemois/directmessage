@@ -57,4 +57,11 @@ public class MailService {
         send(friendRequest.getSender().getEmail(), subject, body);
     }
 
+    public void sendConfirmationEmail(User savedUser, String link) {
+        String subject = "Verify your email";
+        String body = MailTemplates.emailVerification(link);
+
+        log.info("Sending verification email to: {}", savedUser.getFirstName());
+        send(savedUser.getEmail(), subject, body);
+    }
 }
