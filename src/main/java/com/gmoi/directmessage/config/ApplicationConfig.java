@@ -1,7 +1,7 @@
 package com.gmoi.directmessage.config;
 
-import com.gmoi.directmessage.auditing.ApplicationAuditAware;
-import com.gmoi.directmessage.entities.user.UserRepository;
+import com.gmoi.directmessage.audits.ApplicationAuditAware;
+import com.gmoi.directmessage.repositories.UserRepository;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -1,7 +1,7 @@
 package com.gmoi.directmessage.config;
 
-import com.gmoi.directmessage.auth.JwtService;
-import com.gmoi.directmessage.entities.user.UserRole;
+import com.gmoi.directmessage.auth.services.JwtService;
+import com.gmoi.directmessage.models.UserRole;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
