@@ -30,6 +30,32 @@ Welcome to **Direct Message**, a real-time chat application built using Spring B
 
 ---
 
+---
+
+## Additional Features
+
+### API Documentation
+- **OpenAPI (Swagger) Docs**: Explore and interact with the API using Swagger UI.  
+  The Swagger documentation is automatically generated and accessible at:
+    ```
+      http://<HOST>:<PORT>/swagger-ui.html
+    ```
+  
+### Logging
+- **Logs**: All application logs, including error and debug logs, are automatically generated and stored in the `/logs` directory.  
+  These logs help with monitoring, debugging, and auditing application activity.
+
+
+### Database Auditing
+- **Auditing for All Entities**: The application tracks creation and update metadata for all database entities:
+- **Created By**: The user who created the entity.
+- **Updated By**: The user who last updated the entity.
+- **Created At**: The timestamp when the entity was created.
+- **Updated At**: The timestamp when the entity was last updated.
+
+---
+
+
 ## Prerequisites
 
 ### Tools and Services Required

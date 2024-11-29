@@ -3,6 +3,7 @@ package com.gmoi.directmessage.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,11 +39,11 @@ public class User extends Auditable implements UserDetails {
     private boolean twoFactorEnabled;
 
     @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    private UserStatus status = UserStatus.OFFLINE;
     @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] photo;
-    private LocalDateTime lastActivityDate;
+    private LocalDateTime lastActivityDate = LocalDateTime.now();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

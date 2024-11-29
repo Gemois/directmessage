@@ -7,6 +7,7 @@ import com.gmoi.directmessage.auth.dtos.RegisterRequest;
 import com.gmoi.directmessage.mail.MailService;
 import com.gmoi.directmessage.models.User;
 import com.gmoi.directmessage.models.UserRole;
+import com.gmoi.directmessage.models.UserStatus;
 import com.gmoi.directmessage.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -47,6 +49,8 @@ public class AuthenticationService {
                 .firstName(request.getFirstname())
                 .lastName(request.getLastname())
                 .email(request.getEmail())
+                .status(UserStatus.ONLINE)
+                .lastActivityDate(LocalDateTime.now())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(UserRole.USER)
                 .build();
